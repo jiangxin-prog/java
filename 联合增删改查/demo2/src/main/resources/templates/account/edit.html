@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hello Spring Boot</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="container">
+    <div>添加用户</div>
+    <form action="#" th:action="@{/account/save}"th:object="${account}" method="post" enctype="multipart/form-data">
+        id：<input type="text" name="id" th:field="${info.id}" readonly /><br>
+        用户组： <select name="accountTypeId">
+                    <option  th:each="item:${list}" th:value="${item.id}" th:selected="(${item.id} == ${info.accountTypeId})" th:text="${item.name}">
+                </select><br>
+        姓名：<input type="text" name="name" th:field="${info.name}" /><br>
+        密码：<input type="text" name="pwd" th:field="${info.pwd}" /><br>
+        头像：<input type="file" name="picc"   accept="image/*"/>
+                <img class="portrait" th:src="@{${info.pic}}" th:if="${not #strings.isEmpty(info.pic)}">
+            <br>
+        爱好：<input type="checkbox" value="1" name="like" th:checked="${info.like.contains('1')}" />
+            <input type="checkbox" value="2" name="like" th:checked="${info.like.contains('2')}" />
+            <input type="checkbox" value="3" name="like" th:checked="${info.like.contains('3')}" /><br>
+
+        用户详细：<textarea name="detail" th:text="${info.detail}" placeholder="请在这里输入详细信息"></textarea><br>
+        状态：
+        正常<input type="radio" name="status" value="0"  th:checked="${info.status==0}" />
+        异常<input type="radio" name="status" value="1"  th:checked="${info.status==1}"/>
+        冻结<input type="radio" name="status" value="2"   th:checked="${info.status==2}"/><br>
+        <button type="submit">submit</button>
+    </form>
+</div>
+</body>
+</html>

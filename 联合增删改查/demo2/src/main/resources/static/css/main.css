@@ -1,0 +1,53 @@
+.container{
+    color:#333;
+}
+table{
+    margin: auto;
+    width: 80%;
+    border-top: 1px solid #000000;
+    border-left: 1px solid #000000;
+}
+caption{
+    text-align: left;
+}
+td{
+    border-bottom: 1px solid #000000;
+    border-right: 1px solid #000000;
+}
+table tr:nth-child(odd){
+    background:#F4F4F4;
+}
+table tr:nth-child(even){
+    color:#C00;
+}
+
+.frozen{
+    color: cyan;
+}
+.abnormal{
+    color: #8aff8c;
+}
+.frozen{
+    color: #ff8991;
+}
+.portrait{
+    width:100px;
+    height:100px;
+}
+caption{
+    font-size: 40px;
+}
+.page{
+    text-align: center;
+    margin-top: 50px;
+}
+.page a, .page span{
+    text-decoration: none;
+    border: 1px solid #f9d52b;
+    padding: 5px 7px;
+    color: #767675;
+    cursor: pointer;
+}
+.page a:hover,.page span:hover{
+    color: red;
+}

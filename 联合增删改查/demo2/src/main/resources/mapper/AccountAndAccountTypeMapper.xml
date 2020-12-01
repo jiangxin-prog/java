@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo1.logindemo.dao.AccountAndAccountTypeMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo1.logindemo.model.AccountAndAccountType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account_type_id" jdbcType="INTEGER" property="accountTypeId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="account_type_name" jdbcType="INTEGER" property="accountTypeName" />
+  </resultMap>
+
+
+
+
+  <select id="selectAll"  resultMap="BaseResultMap">
+    SELECT
+        account.id,
+        account_type_id,
+        account.`name`,
+        account.`pwd`,
+        account.`status`,
+        account_type.`name` AS account_type_name
+    FROM
+        account
+    LEFT JOIN account_type ON account.account_type_id = account_type.id order by id;
+  </select>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    SELECT
+            account.id,
+            account_type_id,
+            account.`name`,
+            account.`pwd`,
+            account.`status`,
+            account_type.`name` AS account_type_name
+        FROM
+            account
+    LEFT JOIN account_type ON account.account_type_id = account_type.id
+    WHERE account.id=#{id};
+  </select>
+
+</mapper>

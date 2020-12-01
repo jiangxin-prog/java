@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Hello Spring Boot</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div class="container">
+    <div>添加用户</div>
+    <form action="#" th:action="@{/account/save}"th:object="${account}" method="post"  enctype="multipart/form-data">
+        用户组： <select name="accountTypeId">
+                    <option  th:each="item:${list}" th:value="${item.id}" th:text="${item.name}">
+                </select><br>
+        姓名：<input type="text" name="name" value="小红" /><br>
+        密码：<input type="text" name="pwd" value="小红" /><br>
+        头像：<input type="file" name="picc"  accept="image/*"/><br>
+        爱好：<input type="checkbox" value="1" name="like" checked="checked"/>
+            <input type="checkbox" value="2" name="like"/>
+            <input type="checkbox" value="3" name="like"/><br>
+
+        用户详细：<textarea name="detail" placeholder="请在这里输入详细信息"></textarea><br>
+        状态：
+        正常<input type="radio" name="status" value="0" checked="checked"/>
+        异常<input type="radio" name="status" value="1" />
+        冻结<input type="radio" name="status" value="2" /><br>
+        <button type="submit">submit</button>
+    </form>
+</div>
+</body>
+</html>

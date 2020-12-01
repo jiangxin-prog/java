@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo1.logindemo.dao.AccountMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo1.logindemo.model.Account">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="account_type_id" jdbcType="INTEGER" property="accountTypeId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="like" jdbcType="VARCHAR" property="like" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="total_number" jdbcType="INTEGER" property="totalNumber" />
+    <result column="delivery_address_str" jdbcType="VARCHAR" property="deliveryAddressStr" />
+    <association property="accountType" javaType="com.example.demo1.logindemo.model.AccountType">
+      <result column="account_type_id" jdbcType="INTEGER" property="id" />
+      <result column="account_type_name" jdbcType="VARCHAR" property="name" />
+
+</association>
+<collection property="articleList" ofType="com.example.demo1.logindemo.model.Article">
+<result column="cid" jdbcType="INTEGER" property="cid" />
+<result column="article_name" jdbcType="VARCHAR" property="name" />
+</collection>
+        </resultMap>
+<!--  <select id="selectAll"  resultMap="BaseResultMap">-->
+<!--    select * from account order by id;-->
+<!--  </select>-->
+    <select id="selectCount"  resultMap="BaseResultMap" parameterType="com.example.demo1.logindemo.model.Account">
+        SELECT
+            count(account.id) as total_number
+        FROM
+        account
+        LEFT JOIN account_type ON account.account_type_id = account_type.id
+        LEFT JOIN article ON account.id = article.cid
+    </select>
+
+    <select id="selectAll"  resultMap="BaseResultMap" parameterType="com.example.demo1.logindemo.model.Account">
+    SELECT
+        account.id,
+        account_type_id,
+        account.`name`,
+        account.`pwd`,
+        account.`status`,
+        account_type.`name` as account_type_name,
+        (select group_concat(delivery_address.`name`) from delivery_address where delivery_address.cid=account.id) as delivery_address_str,
+        article.name as article_name
+    FROM
+        account
+    LEFT JOIN account_type ON account.account_type_id = account_type.id
+    LEFT JOIN article ON account.id = article.cid
+    <where>
+        <if test="account.name != null and account.name != ''  ">
+<!--        <![CDATA[  and account.name like concat('%',#{name},'%') ]]>-->
+            and account.name like concat('%',#{account.name},'%')
+        </if>
+        <if test="account.pwd != '' and account.pwd != null">
+            and account.pwd like concat('%',#{account.pwd},'%')
+<!--            <![CDATA[   and account.pwd like  concat('%',#{pwd},'%')  ]]>-->
+        </if>
+<!--        <if test="account.accountTypeId != '' and account.accountTypeId != null">-->
+<!--            and account.account_type_id=#{account.accountTypeId}-->
+<!--            &lt;!&ndash;            <![CDATA[   and account.pwd like  concat('%',#{pwd},'%')  ]]>&ndash;&gt;-->
+<!--        </if>-->
+    </where>
+    order by id
+    <if test="startIndex != '' and pageSize != null">
+        limit  #{startIndex}, #{pageSize}
+    </if>
+  </select>
+
+
+    <select id="selectList"  resultMap="BaseResultMap" parameterType="com.example.demo1.logindemo.model.Account">
+        SELECT
+        account.id,
+        account_type_id,
+        account.`name`,
+        account.`pwd`,
+        account.`status`,
+        account_type.`name` as account_type_name,
+        (select group_concat(delivery_address.`name`) from delivery_address where delivery_address.cid=account.id) as delivery_address_str,
+        article.name as article_name
+        FROM
+        account
+        LEFT JOIN account_type ON account.account_type_id = account_type.id
+        LEFT JOIN article ON account.id = article.cid
+        <where>
+            <if test="account.name != null and account.name != ''  ">
+                <!--        <![CDATA[  and account.name like concat('%',#{name},'%') ]]>-->
+                and account.name like concat('%',#{account.name},'%')
+            </if>
+            <if test="account.pwd != '' and account.pwd != null">
+                and account.pwd like concat('%',#{account.pwd},'%')
+                <!--            <![CDATA[   and account.pwd like  concat('%',#{pwd},'%')  ]]>-->
+            </if>
+            <!--        <if test="account.accountTypeId != '' and account.accountTypeId != null">-->
+            <!--            and account.account_type_id=#{account.accountTypeId}-->
+            <!--            &lt;!&ndash;            <![CDATA[   and account.pwd like  concat('%',#{pwd},'%')  ]]>&ndash;&gt;-->
+            <!--        </if>-->
+        </where>
+        order by id
+
+    </select>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select * from account where id=#{id};
+  </select>
+
+  <insert id="add" parameterType="com.example.demo1.logindemo.model.Account" >
+    insert into account
+        (account_type_id,`name`,pwd,pic,`like`,detail,status)
+    values
+        (#{account.accountTypeId},#{account.name},#{account.pwd},#{account.pic},#{account.like},#{account.detail},#{account.status});
+  </insert>
+  <update id="updateById" parameterType="com.example.demo1.logindemo.model.Account" >
+    update account
+    set
+        account_type_id=#{account.accountTypeId},
+        `name`=#{account.name},
+        pwd=#{account.pwd},
+        pic=#{account.pic},
+        `like`=#{account.like},
+        detail=#{account.detail},
+        status=#{account.status}
+    where
+        id=#{account.id};
+  </update>
+    <delete id="deleteById" parameterType="com.example.demo1.logindemo.model.Account">
+        delete from account where id=#{id}
+    </delete>
+
+</mapper>
